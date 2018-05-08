@@ -1,7 +1,3 @@
-/* body {
-  background-color: blue;
-} */
-
 .card-wrapper {
   display: flex;
   justify-content: space-evenly;
@@ -45,6 +41,6 @@
   background-color: peru;
 }
 
-.card:hover {
+.flip-card {
   transform: rotateY(180deg);
 }
