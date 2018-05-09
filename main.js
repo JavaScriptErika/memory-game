@@ -6,6 +6,47 @@ let indexFromClick = 0;
 let cardWrapper = document.querySelector('.card-wrapper');
 let emojiArrTest = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
 
+// Create dynamic HTML divs with classes to display cards
+const displayCards = () => {
+  for (let i = 0; i < 16; i++) {
+    const cardDiv = document.createElement('div');
+    const cardFront = document.createElement('div');
+    const cardBack = document.createElement('div');
+
+    cardDiv.className = 'card';
+    cardFront.className = 'card-front';
+    cardBack.className = 'card-back';
+
+    cardBack.innerText = `${emojiArrTest[i]}`;
+
+    cardDiv.append(cardFront, cardBack);
+    cardWrapper.append(cardDiv);
+  }
+}
+
+/*
+  Shuffle function from http://stackoverflow.com/a/2450976
+  1) Allows us to randomly shuffle the indexes of the emoji array when called
+*/
+const shuffle = (array) => {
+
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+window.addEventListener("load", () => {
+  shuffle(emojiArrTest);
+  displayCards();
+})
 /*
 IIFEE
 1) Loop through card array and add its emoji to a new array, emojiArr
@@ -15,21 +56,6 @@ Click Handler
 2) Keep count of times card is clicked,
 3) Add class to reveal back of card aka emoji
 */
-
-for (let i = 0; i < 16; i++) {
-  let cardDiv = document.createElement('div');
-  cardDiv.className = 'card';
-
-  let cardFront = document.createElement('div');
-  cardFront.className = 'card-front';
-
-  let cardBack = document.createElement('div');
-  cardBack.className = 'card-back';
-  cardBack.innerText = `${emojiArrTest[i]}`;
-
-  cardDiv.append(cardFront, cardBack);
-  cardWrapper.append(cardDiv);
-}
 
 // cardsArr.forEach((card, i) => {
 //   emojiArr.push(card.innerText);
