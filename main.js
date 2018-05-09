@@ -1,23 +1,20 @@
-const cardsArr = Array.from(document.querySelectorAll('.card'));
-
-let emojiArr = [];
 let clickCounter = 0;
 let indexFromClick = 0;
-let cardWrapper = document.querySelector('.card-wrapper');
-let emojiArrTest = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
+let cardWrapper = document.querySelector(".card-wrapper");
+let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
 
 // Create dynamic HTML divs with classes to display cards
 const displayCards = () => {
   for (let i = 0; i < 16; i++) {
-    const cardDiv = document.createElement('div');
-    const cardFront = document.createElement('div');
-    const cardBack = document.createElement('div');
+    const cardDiv = document.createElement("div");
+    const cardFront = document.createElement("div");
+    const cardBack = document.createElement("div");
 
-    cardDiv.className = 'card';
-    cardFront.className = 'card-front';
-    cardBack.className = 'card-back';
+    cardDiv.className = "card";
+    cardFront.className = "card-front";
+    cardBack.className = "card-back";
 
-    cardBack.innerText = `${emojiArrTest[i]}`;
+    cardBack.innerText = `${emojiArr[i]}`;
 
     cardDiv.append(cardFront, cardBack);
     cardWrapper.append(cardDiv);
@@ -39,13 +36,26 @@ const shuffle = (array) => {
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-
   return array;
 }
 
+const addClickListenerToCards = (cardsArr) => {
+  cardsArr.forEach((card, i) => {
+    // emojiArr.push(card.innerText);
+    card.addEventListener("click", () => {
+      clickCounter++;
+      card.classList.add("flip-card");
+      // trackClicksAssignIndex(i);
+      // ifCardsDontMatch(card);
+    });
+  });
+}
+
 window.addEventListener("load", () => {
-  shuffle(emojiArrTest);
+  shuffle(emojiArr);
   displayCards();
+  let cardsArr = document.querySelectorAll(".card");
+  addClickListenerToCards(cardsArr);
 })
 /*
 IIFEE
@@ -57,15 +67,7 @@ Click Handler
 3) Add class to reveal back of card aka emoji
 */
 
-// cardsArr.forEach((card, i) => {
-//   emojiArr.push(card.innerText);
-//   card.addEventListener('click', () => {
-//     clickCounter++;
-//     card.classList.add('flip-card');
-//     trackClicksAssignIndex(i);
-//     ifCardsDontMatch(card);
-//   });
-// });
+
 // First user click and every other user click will be assigned that corresponding index of card
 // const trackClicksAssignIndex = i => (clickCounter % 2 === 0 ? null : (indexFromClick = i));
 
