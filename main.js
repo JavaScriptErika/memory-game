@@ -1,41 +1,27 @@
-const cards = document.querySelectorAll('.card');
-const myArray = Array.from(cards);
+const cardsArr = Array.from(document.querySelectorAll('.card'));
 
-let copy = [];
-let counter = 0;
-let getIndex1 = 0;
-let getIndex2 = 0;
+let emojiArr = [];
+let clickCounter = 0;
+let indexEvenClick = 0;
+let indexOddClick = 0;
 
-Array.from(cards).forEach((card, i) => {
-  copy.push(card.innerText);
+let assignClicksToIndex = i => {
+  clickCounter % 2 === 0 ? (indexEvenClick = i) : (indexOddClick = i);
+};
+
+cardsArr.forEach((card, i) => {
+  emojiArr.push(card.innerText);
 
   card.addEventListener('click', () => {
-    counter++;
-
+    clickCounter++;
     card.classList.add('flip-card');
 
-    if (counter % 2 === 0) {
-      getIndex1 = i;
-    } else {
-      getIndex2 = i;
-    }
+    assignClicksToIndex(i);
 
-    console.log(
-      '2 clicks',
-      copy[`${getIndex1}`],
-      'inner card',
-      card.innerText,
-      'odd click',
-      copy[`${getIndex2}`],
-      'inner card',
-      card.innerText
-    );
-    console.log(copy[`${getIndex1}`] !== card.innerText);
-
-    if (copy[`${getIndex1}`] === card.innerText && copy[`${getIndex2}`] !== card.innerText) {
+    if (emojiArr[`${indexEvenClick}`] === card.innerText && emojiArr[`${indexOddClick}`] !== card.innerText) {
       setTimeout(() => {
         card.classList.remove('flip-card');
-        myArray[`${getIndex2}`].classList.remove('flip-card');
+        cardsArr[`${indexOddClick}`].classList.remove('flip-card');
       }, 800);
     }
   });
