@@ -1,12 +1,16 @@
-let clickCounter = 0;
-let indexFromClick = 0;
-let tempOpenCards = [];
-let matchingCards = [];
 let cardsArr = [];
+let cardClicksCounter = 0;
 let cardWrapper = document.querySelector(".card-wrapper");
-let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
+let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
+let gameMovesCounter = 0;
+let matchingCards = [];
+let tempOpenCards = [];
 
-// Create dynamic HTML divs with classes to display cards
+/*
+Display JS-created cards with randomly shuffled emojiArr
+Invoked by load handler
+*/
+
 const displayCards = () => {
   for (let i = 0; i < 16; i++) {
     const cardDiv = document.createElement("div");
@@ -26,7 +30,7 @@ const displayCards = () => {
 
 /*
 Shuffle
-1) Randomly shuffle the indexes of the emoji array when called
+1) Randomly shuffle the indexes of emojiArr
 2) Credit http://stackoverflow.com/a/2450976
 */
 const shuffle = (array) => {
@@ -46,66 +50,108 @@ const shuffle = (array) => {
 /*
 Click Handler
 1) Add click handler to each of the card elements
-2) Keep count of times card is clicked to get prev card click based on index
-3) Add class to reveal back of card aka emoji
+2) Keep count of games moves
+3) Keep count of card clicks so that users can't exceed
+more than 2 card flips until the cardClicksCounter is reset 
+when cards do or don't match
 */
 
 const addClickListenerToCards = (cardsArr) => {
   cardsArr.forEach((card, i) => {
     card.addEventListener("click", () => {
-      clickCounter++;
-      revealCardBack(card)
-      trackClicksAssignIndex(i);
+      gameMovesCounter++;
+      cardClicksCounter++
+
+      cardClicksCounter <= 2 ? revealCardBack(card) : null;
     }, false);
   });
 }
 
+/*
+1) Add a transition class to reveal emoji
+2) Pass revealed card to function to keep
+  track of which cards have been clicked on
+*/
 const revealCardBack = (card) => {
   card.classList.add("flip-card");
-  addOpenCardstoArr(card)
+  addOpenCardstoTempArr(card)
 }
 
-const addOpenCardstoArr = (card) => {
+
+/*
+1) Add emojis from clicked cards into a temp array of open cards
+  a) This will allow us to compare 1 set of current and previous clicked cards at a time
+2) Make sure two cards have been clicked and compare if they match
+*/
+const addOpenCardstoTempArr = (card) => {
   tempOpenCards.push(card.innerText)
-  tempOpenCards.length >= 2 ? doCardsMatch(card) : null;
+  tempOpenCards.length === 2 ? doCardsMatch(card) : null;
 }
 
+// Resets cardClicksCounter after 1s
+const resetCardClicks = () => {
+  setTimeout(() => {
+    cardClicksCounter = 0;
+  }, 1000)
+}
+
+/*
+1) Compare previous card clicked [0] and current card clicked [1]
+*/
 const doCardsMatch = (card) => {
-
-  card.innerText === tempOpenCards[0] ? cardsMatch(card) : cardsDontMatch(card)
-
+  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch(card)
 }
 
-const cardsMatch = (card) => {
-  matchingCards[matchingCards.length - 1] != card.innerText ? matchingCards.push(tempOpenCards[0], card.innerText) : null;
-  alert("hi")
+/*
+1) Check if the matchingCards ALREADY has the emoji with the current card
+user has clicked on.
+
+If the matchingCards doesn't contain the current clicked card emoji, 
+add the current and previous matched emojis set to the list.
+
+We do this to make sure if a user clicks multiple times on a matched card set
+we do not keep adding them to the matchingCards array.
+*/
+const cardsDoMatch = () => {
+  matchingCards.includes(tempOpenCards[1]) ? null : matchingCards.push(tempOpenCards[0], tempOpenCards[1]);
   console.log(matchingCards)
+  resetCardClicks();
+
   clearTempArr()
 }
 
+/*
+ 1) Clear array so we can just compare 2 values: previous and current clicks
+*/
 const clearTempArr = () => {
-  tempOpenCards.length >= 2 ? tempOpenCards.splice(-1, 2) : null
-  tempOpenCards.length === 1 ? tempOpenCards.splice(-1, 1) : null
+  tempOpenCards = []
 }
 
+
+/*
+1) Clear temporary values set of previous and current cards
+2) Set timeout to remove classes from non-matching cards that do not have matching emojis
+in the matchingCards array
+  a) We do this so if a user clicks on a card that is already a matched set and a card
+  that doesn't match, only the unmatched card gets its flip-card class removed, and the matched set is
+  not affected.
+*/
 const cardsDontMatch = (card) => {
-  if (tempOpenCards.length != 1) {
-    setTimeout(() => {
-      card.classList.remove('flip-card');
-      cardsArr[indexFromClick].classList.remove('flip-card');
-    }, 1000);
-    clearTempArr()
-    console.log(tempOpenCards)
-  }
+  clearTempArr()
+  setTimeout(() => {
+    cardsArr.forEach((card) => {
+      if (!matchingCards.includes(card.innerText)) {
+        card.classList.remove('flip-card');
+      }
+    })
+  }, 1000);
+  resetCardClicks();
 }
-// First user click and every other user click will be assigned that corresponding index of card
-const trackClicksAssignIndex = i => (clickCounter % 2 === 0 ? null : (indexFromClick = i));
-
 
 /*
 Load Handler
 1) Call function to randomly shuffle the indexes of the emoji array
-2) Display cards with randomly shuffled emoji
+2) Display JS-created cards with randomly shuffled emoji
 3) Grab all cards from the DOM, turn Nodelist into array
 4) Call function add click handler to cards in DOM
 */
