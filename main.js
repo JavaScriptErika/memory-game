@@ -5,8 +5,12 @@ let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧
 let gameMovesCounter = 0;
 let matchingCards = [];
 const playerMoves = document.getElementById("playerMoves")
-const playerTimer = document.getElementById("playerTimer")
+const playerMinutes = document.getElementById("playerMinutes")
+const playerSeconds = document.getElementById("playerSeconds")
 let tempOpenCards = [];
+let timer;
+let seconds = 0;
+let minutes = 0;
 
 /*
 Load Handler
@@ -71,7 +75,8 @@ const displayCards = () => {
 Click Handler
 1) Add click handler to each of the card elements
 2) Keep count of games moves
-3) Flip and reset cards back if a user clicks multiple times on 1 card
+3) Flip and reset cards back if a user clicks multiple times on 1 card, and the matching
+  cards array doesn't contain the emoji of the current card clicked
 4) Keep count of card clicks so that users can't exceed
 more than 2 card flips until the cardClicksCounter is reset 
 when cards do or don't match
@@ -82,20 +87,33 @@ const addClickListenerToCards = (cardsArr) => {
     card.addEventListener("click", () => {
 
       cardClicksCounter++
+      beginGameTimer();
 
-      if (card.classList.contains('flip-card')) {
+      if (card.classList.contains('flip-card') && !matchingCards.includes(card.innerText)) {
         cardsDontMatch()
       } else {
         cardClicksCounter <= 2 ? revealCardBack(card) : null;
       }
-
     }, false);
   });
 }
 
+
+let beginGameTimer = () => {
+  timer = setInterval(() => {
+
+    if (seconds % 60 === 0 && seconds !== 0) {
+      minutes++
+      minutes > 9 ? playerMinutes.innerText = minutes : playerMinutes.innerText = "0" + minutes
+      seconds = 0;
+    }
+
+    seconds > 9 ? playerSeconds.innerText = seconds++ : playerSeconds.innerText = "0" + seconds++
+  }, 1000)
+}
+
 const displayPlayerMoves = (keepCounting) => {
   keepCounting ? playerMoves.textContent = `${gameMovesCounter++}` : null;
-
 }
 
 
@@ -110,13 +128,22 @@ const revealCardBack = (card) => {
 }
 
 
-/*
-1) Add emojis from clicked cards into a temp array of open cards
+/* REMINDER TO LOOK THIS OVER
+1) Check if card has flip class and is included already in the matching cards array. If it does,
+don't keep counting, if it doesn't keep counting the player moves.
+  a) We do this so if a user clicks on a paired match, it won't increase their player moves
+2) Add emojis from clicked cards into a temp array of open cards
   a) This will allow us to compare 1 set of current and previous clicked cards at a time
-2) Make sure two cards have been clicked and compare if they match
+3) Make sure two cards have been clicked and compare if they match
 */
 const addOpenCardstoTempArr = (card) => {
-  displayPlayerMoves(true);
+  if (card.classList.contains('flip-card') && matchingCards.includes(card.innerText)) {
+    displayPlayerMoves(false)
+    resetCardClicks()
+  } else {
+    displayPlayerMoves(true)
+  }
+
   tempOpenCards.push(card.innerText)
   tempOpenCards.length === 2 ? doCardsMatch(card) : null;
 }
@@ -125,7 +152,6 @@ const addOpenCardstoTempArr = (card) => {
 1) Compare previous card clicked [0] and current card clicked [1]
 */
 const doCardsMatch = (card) => {
-
   tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch(card)
 }
 
@@ -184,6 +210,6 @@ const cardsDontMatch = (card) => {
 
 
 
-const gameTimer = () => {
 
-}
+
+
