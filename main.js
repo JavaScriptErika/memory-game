@@ -1,9 +1,11 @@
 let cardsArr = [];
 let cardClicksCounter = 0;
-let cardWrapper = document.querySelector(".card-wrapper");
+const cardWrapper = document.querySelector(".card-wrapper");
 let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
 let gameMovesCounter = 0;
 let matchingCards = [];
+const playerMoves = document.getElementById("playerMoves")
+const playerTimer = document.getElementById("playerTimer")
 let tempOpenCards = [];
 
 /*
@@ -59,12 +61,17 @@ when cards do or don't match
 const addClickListenerToCards = (cardsArr) => {
   cardsArr.forEach((card, i) => {
     card.addEventListener("click", () => {
-      gameMovesCounter++;
+      displayPlayerMoves();
       cardClicksCounter++
 
       cardClicksCounter <= 2 ? revealCardBack(card) : null;
     }, false);
   });
+}
+
+const displayPlayerMoves = () => {
+  // gameMovesCounter++;
+  playerMoves.textContent = `${gameMovesCounter++}`
 }
 
 /*
@@ -160,4 +167,5 @@ window.addEventListener("load", () => {
   displayCards();
   cardsArr = Array.from(document.querySelectorAll(".card"));
   addClickListenerToCards(cardsArr);
+  displayPlayerMoves()
 })
