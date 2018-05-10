@@ -1,5 +1,8 @@
 let clickCounter = 0;
 let indexFromClick = 0;
+let tempOpenCards = [];
+let matchingCards = [];
+let cardsArr = [];
 let cardWrapper = document.querySelector(".card-wrapper");
 let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
 
@@ -22,8 +25,9 @@ const displayCards = () => {
 }
 
 /*
-  Shuffle function from http://stackoverflow.com/a/2450976
-  1) Allows us to randomly shuffle the indexes of the emoji array when called
+Shuffle
+1) Randomly shuffle the indexes of the emoji array when called
+2) Credit http://stackoverflow.com/a/2450976
 */
 const shuffle = (array) => {
 
@@ -39,44 +43,75 @@ const shuffle = (array) => {
   return array;
 }
 
-const addClickListenerToCards = (cardsArr) => {
-  cardsArr.forEach((card, i) => {
-    // emojiArr.push(card.innerText);
-    card.addEventListener("click", () => {
-      clickCounter++;
-      card.classList.add("flip-card");
-      // trackClicksAssignIndex(i);
-      // ifCardsDontMatch(card);
-    });
-  });
-}
-
-window.addEventListener("load", () => {
-  shuffle(emojiArr);
-  displayCards();
-  let cardsArr = document.querySelectorAll(".card");
-  addClickListenerToCards(cardsArr);
-})
 /*
-IIFEE
-1) Loop through card array and add its emoji to a new array, emojiArr
-
 Click Handler
 1) Add click handler to each of the card elements
-2) Keep count of times card is clicked,
+2) Keep count of times card is clicked to get prev card click based on index
 3) Add class to reveal back of card aka emoji
 */
 
+const addClickListenerToCards = (cardsArr) => {
+  cardsArr.forEach((card, i) => {
+    card.addEventListener("click", () => {
+      clickCounter++;
+      revealCardBack(card)
+      trackClicksAssignIndex(i);
+    }, false);
+  });
+}
 
+const revealCardBack = (card) => {
+  card.classList.add("flip-card");
+  addOpenCardstoArr(card)
+}
+
+const addOpenCardstoArr = (card) => {
+  tempOpenCards.push(card.innerText)
+  tempOpenCards.length >= 2 ? doCardsMatch(card) : null;
+}
+
+const doCardsMatch = (card) => {
+
+  card.innerText === tempOpenCards[0] ? cardsMatch(card) : cardsDontMatch(card)
+
+}
+
+const cardsMatch = (card) => {
+  matchingCards[matchingCards.length - 1] != card.innerText ? matchingCards.push(tempOpenCards[0], card.innerText) : null;
+  alert("hi")
+  console.log(matchingCards)
+  clearTempArr()
+}
+
+const clearTempArr = () => {
+  tempOpenCards.length >= 2 ? tempOpenCards.splice(-1, 2) : null
+  tempOpenCards.length === 1 ? tempOpenCards.splice(-1, 1) : null
+}
+
+const cardsDontMatch = (card) => {
+  if (tempOpenCards.length != 1) {
+    setTimeout(() => {
+      card.classList.remove('flip-card');
+      cardsArr[indexFromClick].classList.remove('flip-card');
+    }, 1000);
+    clearTempArr()
+    console.log(tempOpenCards)
+  }
+}
 // First user click and every other user click will be assigned that corresponding index of card
-// const trackClicksAssignIndex = i => (clickCounter % 2 === 0 ? null : (indexFromClick = i));
+const trackClicksAssignIndex = i => (clickCounter % 2 === 0 ? null : (indexFromClick = i));
 
-// Compare the value of the emojiArr via index to card currently clicked from the event handler
-// const ifCardsDontMatch = card => {
-//   if (emojiArr[`${indexFromClick}`] !== card.innerText) {
-//     setTimeout(() => {
-//       card.classList.remove('flip-card');
-//       cardsArr[`${indexFromClick}`].classList.remove('flip-card');
-//     }, 800);
-//   }
-// };
+
+/*
+Load Handler
+1) Call function to randomly shuffle the indexes of the emoji array
+2) Display cards with randomly shuffled emoji
+3) Grab all cards from the DOM, turn Nodelist into array
+4) Call function add click handler to cards in DOM
+*/
+window.addEventListener("load", () => {
+  shuffle(emojiArr);
+  displayCards();
+  cardsArr = Array.from(document.querySelectorAll(".card"));
+  addClickListenerToCards(cardsArr);
+})
