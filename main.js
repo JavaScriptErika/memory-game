@@ -11,8 +11,9 @@ let tempOpenCards = [];
 let timer;
 let seconds = 0;
 let minutes = 0;
-const starArr = [..."⭐⭐⭐"]
+let starArr = [..."⭐⭐⭐"]
 const playerStars = document.getElementById("playerStars")
+const restartButton = document.getElementById("restart-button")
 
 /*
 Load Handler
@@ -115,7 +116,6 @@ const displayAndChangeStarRating = () => {
   }
 
   playerStars.innerText = `${starArr.join("")}`
-
 }
 
 const beginGameTimer = () => {
@@ -162,7 +162,6 @@ const addOpenCardstoTempArr = (card) => {
   } else {
     displayPlayerMoves(true)
   }
-
   tempOpenCards.push(card.innerText)
   tempOpenCards.length === 2 ? doCardsMatch(card) : null;
 }
@@ -171,7 +170,7 @@ const addOpenCardstoTempArr = (card) => {
 1) Compare previous card clicked [0] and current card clicked [1]
 */
 const doCardsMatch = (card) => {
-  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch(card)
+  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch()
 }
 
 /*
@@ -214,21 +213,48 @@ in the matchingCards array
   that doesn't match, only the unmatched card gets its flip-card class removed, and the matched set is
   not affected.
 */
-const cardsDontMatch = (card) => {
+const cardsDontMatch = () => {
   clearTempArr()
   displayPlayerMoves(false);
   setTimeout(() => {
-    cardsArr.forEach((card) => {
-      if (!matchingCards.includes(card.innerText)) {
-        card.classList.remove('flip-card');
-      }
-    })
+    removeCardFlipClass();
   }, 1000);
   resetCardClicks();
 }
 
+restartButton.addEventListener("click", () => {
+  resetGame()
+})
 
 
+// reset the game board, the timer, and the star rating
+const resetGame = () => {
+
+  starArr = [..."⭐⭐⭐"];
+  playerStars.innerText = `${starArr.join("")}`
+
+  resetGameTimer();
 
 
+  gameMovesCounter = 0;
+  playerMoves.textContent = `${gameMovesCounter}`
+  matchingCards = []
+  clearTempArr()
+  resetCardClicks()
+  removeCardFlipClass()
+  displayPlayerMoves(true)
+}
 
+const resetGameTimer = () => {
+  clearInterval(timer);
+  seconds = 0;
+  minutes = 0;
+  playerMinutes.innerText = "00";
+  playerSeconds.innerText = "00";
+}
+
+const removeCardFlipClass = () => {
+  cardsArr.forEach((card, i) => {
+    !matchingCards.includes(card.innerText) ? card.classList.remove('flip-card') : null
+  })
+}
