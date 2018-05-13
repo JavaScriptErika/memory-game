@@ -11,6 +11,8 @@ let tempOpenCards = [];
 let timer;
 let seconds = 0;
 let minutes = 0;
+const starArr = [..."⭐⭐⭐"]
+const playerStars = document.getElementById("playerStars")
 
 /*
 Load Handler
@@ -25,6 +27,7 @@ window.addEventListener("load", () => {
   cardsArr = Array.from(document.querySelectorAll(".card"));
   addClickListenerToCards(cardsArr);
   displayPlayerMoves(true)
+  displayAndChangeStarRating()
 })
 
 
@@ -89,6 +92,8 @@ const addClickListenerToCards = (cardsArr) => {
       cardClicksCounter++
       gameMovesCounter === 1 ? beginGameTimer() : null;
 
+      displayAndChangeStarRating()
+
       if (card.classList.contains('flip-card') && !matchingCards.includes(card.innerText)) {
         cardsDontMatch()
       } else {
@@ -98,8 +103,22 @@ const addClickListenerToCards = (cardsArr) => {
   });
 }
 
+// const displayStars = () => {
+//   playerStars.innerText = `${starArr.join("")}`
+// }
 
-let beginGameTimer = () => {
+const displayAndChangeStarRating = () => {
+  if (gameMovesCounter === 32) {
+    starArr.pop()
+  } else if (gameMovesCounter === 64) {
+    starArr.pop()
+  }
+
+  playerStars.innerText = `${starArr.join("")}`
+
+}
+
+const beginGameTimer = () => {
   timer = setInterval(() => {
 
     if (seconds % 60 === 0 && seconds !== 0) {
