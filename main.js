@@ -1,7 +1,8 @@
 let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector(".card-wrapper");
-let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
+// let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
+let emojiArr = [..."🍩🍩🍰🍰"];
 let gameMovesCounter = 0;
 let matchingCards = [];
 const playerMoves = document.getElementById("playerMoves")
@@ -13,7 +14,9 @@ let seconds = 0;
 let minutes = 0;
 let starArr = [..."⭐⭐⭐"]
 const playerStars = document.getElementById("playerStars")
-const restartButton = document.getElementById("restart-button")
+const restartButton = document.querySelectorAll(".restart-button")
+const popUp = document.querySelector(".popup")
+const popUpInfo = document.querySelector(".display-popup-info")
 
 /*
 Load Handler
@@ -52,13 +55,14 @@ const shuffle = (array) => {
 }
 
 
+
 /*
 Display JS-created cards with randomly shuffled emojiArr
 Invoked by load handler
 */
 
 const displayCards = () => {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < emojiArr.length; i++) {
     const cardDiv = document.createElement("div");
     const cardFront = document.createElement("div");
     const cardBack = document.createElement("div");
@@ -185,9 +189,20 @@ we do not keep adding them to the matchingCards array.
 */
 const cardsDoMatch = () => {
   matchingCards.includes(tempOpenCards[1]) ? null : matchingCards.push(tempOpenCards[0], tempOpenCards[1]);
-
   resetCardClicks();
-  clearTempArr()
+  clearTempArr();
+
+  matchingCards.length === emojiArr.length ? gameWon() : null;
+}
+
+const gameWon = () => {
+
+  clearInterval(timer)
+  // console.log(minutes, seconds, starArr)
+  popUp.classList.add("show-popup")
+  popUpInfo.innerText = `it took ${playerMinutes.innerText} minutes and ${playerSeconds.innerText} seconds, with a star rating of ${starArr.join("")}`
+
+  // ask if they want to play again. It should also tell the user how much time it took to win the game, and what the star rating was
 }
 
 // Resets cardClicksCounter after 1s
@@ -209,9 +224,6 @@ const clearTempArr = () => {
 1) Clear temporary values set of previous and current cards
 2) Set timeout to remove classes from non-matching cards that do not have matching emojis
 in the matchingCards array
-  a) We do this so if a user clicks on a card that is already a matched set and a card
-  that doesn't match, only the unmatched card gets its flip-card class removed, and the matched set is
-  not affected.
 */
 const cardsDontMatch = () => {
   clearTempArr()
@@ -222,13 +234,30 @@ const cardsDontMatch = () => {
   resetCardClicks();
 }
 
-restartButton.addEventListener("click", () => {
-  resetGame()
-})
+/*
+if a user clicks on a card that is already a matched set and another card
+  (that doesn't match), only the unmatched card gets its flip-card class removed, and the matched set is
+  not affected.
+*/
+const removeCardFlipClass = () => {
+  cardsArr.forEach((card, i) => {
+    !matchingCards.includes(card.innerText) ? card.classList.remove('flip-card') : null
+  })
+}
+
+
+restartButton.forEach((button) => {
+  button.addEventListener("click", () => {
+    resetGame()
+  })
+
+});
 
 
 // reset the game board, the timer, and the star rating
 const resetGame = () => {
+
+  popUp.classList.contains("show-popup") ? popUp.classList.remove("show-popup") : null
 
   starArr = [..."⭐⭐⭐"];
   playerStars.innerText = `${starArr.join("")}`
@@ -253,8 +282,3 @@ const resetGameTimer = () => {
   playerSeconds.innerText = "00";
 }
 
-const removeCardFlipClass = () => {
-  cardsArr.forEach((card, i) => {
-    !matchingCards.includes(card.innerText) ? card.classList.remove('flip-card') : null
-  })
-}

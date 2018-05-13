@@ -44,3 +44,20 @@
 .flip-card {
   transform: rotateY(180deg);
 }
+
+.popup {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: tomato;
+  z-index: 1;
+  transform: scale(0);
+  transition: transform 400ms 600ms ease-in-out;
+}
+
+.show-popup {
+  transform: scale(1)
+}
