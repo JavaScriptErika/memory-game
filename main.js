@@ -1,8 +1,7 @@
 let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector(".card-wrapper");
-// let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
-let emojiArr = [..."🍩🍩🍰🍰"];
+let emojiArr = [..."🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧"];
 let gameMovesCounter = 0;
 let matchingCards = [];
 const playerMoves = document.getElementById("playerMoves")
@@ -26,8 +25,7 @@ Load Handler
 4) Call function add click handler to cards in DOM
 */
 window.addEventListener("load", () => {
-  shuffle(emojiArr);
-  displayCards();
+  createAndDisplayCards(shuffle(emojiArr))
   cardsArr = Array.from(document.querySelectorAll(".card"));
   addClickListenerToCards(cardsArr);
   displayPlayerMoves(true)
@@ -61,7 +59,8 @@ Display JS-created cards with randomly shuffled emojiArr
 Invoked by load handler
 */
 
-const displayCards = () => {
+
+const createAndDisplayCards = (shuffledEmojiArr) => {
   for (let i = 0; i < emojiArr.length; i++) {
     const cardDiv = document.createElement("div");
     const cardFront = document.createElement("div");
@@ -71,11 +70,20 @@ const displayCards = () => {
     cardFront.className = "card-front";
     cardBack.className = "card-back";
 
-    cardBack.innerText = `${emojiArr[i]}`;
+    cardBack.innerText = `${shuffledEmojiArr[i]}`;
 
     cardDiv.append(cardFront, cardBack);
     cardWrapper.append(cardDiv);
   }
+}
+
+const reassignEmojiToCards = (shuffledEmojiArr) => {
+  const cardBack = Array.from(document.querySelectorAll('.card-back'))
+
+  cardBack.forEach((card, i) => {
+    card.innerText = `${shuffledEmojiArr[i]}`
+  })
+
 }
 
 
@@ -264,6 +272,7 @@ const resetGame = () => {
 
   resetGameTimer();
 
+  reassignEmojiToCards((shuffle(emojiArr)));
 
   gameMovesCounter = 0;
   playerMoves.textContent = `${gameMovesCounter}`
@@ -281,4 +290,3 @@ const resetGameTimer = () => {
   playerMinutes.innerText = "00";
   playerSeconds.innerText = "00";
 }
-
