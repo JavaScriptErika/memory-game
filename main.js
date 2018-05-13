@@ -87,7 +87,7 @@ const addClickListenerToCards = (cardsArr) => {
     card.addEventListener("click", () => {
 
       cardClicksCounter++
-      beginGameTimer();
+      gameMovesCounter === 1 ? beginGameTimer() : null;
 
       if (card.classList.contains('flip-card') && !matchingCards.includes(card.innerText)) {
         cardsDontMatch()
