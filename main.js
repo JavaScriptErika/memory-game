@@ -2,7 +2,7 @@ let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector('.card-wrapper');
 // let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍫🍫🍧🍧🥧🥧'];
-let emojiArr = [...'🍧🍧🥧🥧'];
+let emojiArr = [...'🍧🍧🥧🥧🍪🍪🍫🍫'];
 let gameMovesCounter = 0;
 const header = document.querySelector('header')
 let matchingCards = [];
@@ -146,8 +146,8 @@ const displayPlayerMoves = keepCounting => {
 
 // Compare previous card clicked [0] and current card clicked [1]
 
-const doCardsMatch = () => {
-  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch();
+const doCardsMatch = (card) => {
+  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch(card) : cardsDontMatch(card);
 };
 
 
@@ -162,17 +162,42 @@ We do this to make sure if a user clicks multiple times on a matched card set
 we do not keep adding them to the matchingCards array.
 */
 
-const cardsDoMatch = () => {
+const cardsDoMatch = (card) => {
+
   matchingCards.includes(tempOpenCards[1]) ? null : matchingCards.push(tempOpenCards[0], tempOpenCards[1]);
+  cardsValidationAnimation(card);
+
   resetCardClicks();
   clearTempArr();
+
   matchingCards.length === emojiArr.length ? gameWon() : null;
 };
 
+/* Check if the cardback's parent card contains the class "flip-card", the matching cards array includes
+the emoji array of current card clicked that has been passed down, and that there have been 2 selections
+ */
+
+const cardsValidationAnimation = (card) => {
+  const cardBacks = document.querySelectorAll('.card-back');
+  cardBacks.forEach((cardback, i) => {
+    if (cardback.closest('.flip-card') && matchingCards.includes(cardback.closest('.flip-card').innerText) && tempOpenCards.length === 2) {
+      cardback.classList.add('card-back-match');
+    }
+
+    else if (!cardback.classList.contains('card-back-match')) {
+      cardback.classList.add('card-back-mismatch')
+      setTimeout(() => {
+        cardback.classList.remove('card-back-mismatch')
+      }, 1000);
+    }
+  });
+
+}
 
 // 1) Clear temporary values set of previous and current cards
 
-const cardsDontMatch = () => {
+const cardsDontMatch = (card) => {
+  cardsValidationAnimation(card);
   clearTempArr();
   displayPlayerMoves(false);
   setTimeout(() => {
@@ -180,6 +205,7 @@ const cardsDontMatch = () => {
   }, 1000);
   resetCardClicks();
 };
+
 
 //remove classes from non-matching cards that do not include matching emojis in the matchingCards array
 const removeCardFlipClass = () => {
@@ -240,6 +266,7 @@ const resetGame = () => {
   clearTempArr();
   resetCardClicks();
   removeCardFlipClass();
+  removeCardMatchAnimation();
   displayPlayerMoves(true);
 };
 
@@ -297,6 +324,13 @@ const resetGameTimer = () => {
 const resetGameCounter = () => {
   gameMovesCounter = 0;
   playerMoves.textContent = `${gameMovesCounter}`;
+}
+
+const removeCardMatchAnimation = () => {
+  const cardBacks = document.querySelectorAll('.card-back');
+  cardBacks.forEach((cardback, i) => {
+    cardback.classList.remove('card-back-match');
+  });
 }
 
 // Resets cardClicksCounter after 1s, we do this so we only keep track of up to 2 clicks
