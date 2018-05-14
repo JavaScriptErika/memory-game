@@ -1,7 +1,7 @@
 let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector('.card-wrapper');
-let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍮🍮🎂🎂🥧🥧'];
+let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍫🍫🍧🍧🥧🥧'];
 let gameMovesCounter = 0;
 let matchingCards = [];
 const playerMoves = document.getElementById('player-moves');
@@ -73,18 +73,6 @@ const createAndDisplayCards = shuffledEmojiArr => {
 };
 
 /*
-1) Reassign random emoji to inner text of cards
-1a) This function is called when the user restarts the game
-*/
-
-const reassignEmojiToCards = shuffledEmojiArr => {
-  const cardBack = Array.from(document.querySelectorAll('.card-back'));
-  cardBack.forEach((card, i) => {
-    card.innerText = `${shuffledEmojiArr[i]}`;
-  });
-};
-
-/*
 Click Handler
 1) Add click handler to each of the card elements
 2) Keep count of how many cards the user has clicked
@@ -100,9 +88,13 @@ when cards do or don't match
 const addClickListenerToCards = cardsArr => {
   cardsArr.forEach((card, i) => {
     card.addEventListener('click', () => {
+
       cardClicksCounter++;
+
       gameMovesCounter === 1 ? beginGameTimer() : null;
+
       displayAndChangeStarRating();
+
       if (card.classList.contains('flip-card') && !matchingCards.includes(card.innerText)) {
         cardsDontMatch();
       } else {
@@ -175,11 +167,9 @@ const cardsDoMatch = () => {
   matchingCards.length === emojiArr.length ? gameWon() : null;
 };
 
-/*
-1) Clear temporary values set of previous and current cards
-2) Set timeout to remove classes from non-matching cards that do not have matching emojis
-in the matchingCards array
-*/
+
+// 1) Clear temporary values set of previous and current cards
+
 const cardsDontMatch = () => {
   clearTempArr();
   displayPlayerMoves(false);
@@ -189,7 +179,7 @@ const cardsDontMatch = () => {
   resetCardClicks();
 };
 
-
+//remove classes from non-matching cards that do not include matching emojis in the matchingCards array
 const removeCardFlipClass = () => {
   cardsArr.forEach((card, i) => {
     !matchingCards.includes(card.innerText) ? card.classList.remove('flip-card') : null;
@@ -205,7 +195,6 @@ const displayAndChangeStarRating = () => {
   playerStars.innerText = `${starArr.join('')}`;
 };
 
-
 const beginGameTimer = () => {
   timer = setInterval(() => {
     if (seconds % 60 === 0 && seconds !== 0) {
@@ -217,6 +206,73 @@ const beginGameTimer = () => {
   }, 1000);
 };
 
+
+const gameWon = () => {
+  clearInterval(timer);
+  popUp.classList.add('show-popup');
+  popUpInfo.innerText = `it took ${playerMinutes.innerText} minutes and ${playerSeconds.innerText} seconds, with a star rating of ${starArr.join('')}`;
+};
+
+restartButton.forEach(button => {
+  button.addEventListener('click', () => {
+    resetGame();
+  });
+});
+
+
+// reset the game board, the timer, and the star rating
+const resetGame = () => {
+  popUp.classList.contains('show-popup') ? popUp.classList.remove('show-popup') : null;
+
+  resetGameWithoutPlaying();
+  resetStars();
+  resetGameTimer();
+  resetGameCounter();
+  matchingCards = [];
+  clearTempArr();
+  resetCardClicks();
+  removeCardFlipClass();
+  displayPlayerMoves(true);
+};
+
+
+/*
+What if the user keeps clicking the "restart" button without actually playing the game?
+This allows me to call a function to shuffle the cards without a transition end call
+or the function to reassign the emoji after animation.
+
+Without this function, bugs happen! If a user clicks endlessly on the restart button,
+and then clicks a card, the previous emoji would glitch. Then, if I didn't add a transition end 
+ when a card IS clicked and user refreshes, the reshuffled emoji would briefly appear.
+*/
+
+const resetGameWithoutPlaying = () => {
+  const areCardsFlippedOver = cardsArr.filter((card) => {
+    return card.classList.contains('flip-card')
+  });
+  areCardsFlippedOver.length === 0 ? reassignEmojiToCards(shuffle(emojiArr)) : ReassignEmojiAfterAnimation(shuffle(emojiArr));
+}
+
+const ReassignEmojiAfterAnimation = shuffledEmojiArr => {
+  cardsArr.forEach((card, i) => {
+    card.addEventListener('transitionend', () => {
+      reassignEmojiToCards(shuffledEmojiArr)
+    })
+  });
+};
+
+const reassignEmojiToCards = (shuffledEmojiArr) => {
+  const cardBacks = document.querySelectorAll('.card-back');
+  cardBacks.forEach((cardback, i) => {
+    cardback.innerText = `${shuffledEmojiArr[i]}`;
+  })
+}
+
+const resetStars = () => {
+  starArr = [...'⭐⭐⭐']
+  playerStars.innerText = `${starArr.join('')}`;
+}
+
 const resetGameTimer = () => {
   clearInterval(timer);
   seconds = 0;
@@ -225,12 +281,10 @@ const resetGameTimer = () => {
   playerSeconds.innerText = '00';
 };
 
-
-const gameWon = () => {
-  clearInterval(timer);
-  popUp.classList.add('show-popup');
-  popUpInfo.innerText = `it took ${playerMinutes.innerText} minutes and ${playerSeconds.innerText} seconds, with a star rating of ${starArr.join('')}`;
-};
+const resetGameCounter = () => {
+  gameMovesCounter = 0;
+  playerMoves.textContent = `${gameMovesCounter}`;
+}
 
 // Resets cardClicksCounter after 1s, we do this so we only keep track of up to 2 clicks
 
@@ -245,28 +299,3 @@ const resetCardClicks = () => {
 const clearTempArr = () => {
   tempOpenCards = [];
 };
-
-
-restartButton.forEach(button => {
-  button.addEventListener('click', () => {
-    resetGame();
-  });
-});
-
-// reset the game board, the timer, and the star rating
-const resetGame = () => {
-  popUp.classList.contains('show-popup') ? popUp.classList.remove('show-popup') : null;
-
-  starArr = [...'⭐⭐⭐']
-  playerStars.innerText = `${starArr.join('')}`;
-  resetGameTimer();
-  reassignEmojiToCards(shuffle(emojiArr));
-  gameMovesCounter = 0;
-  playerMoves.textContent = `${gameMovesCounter}`;
-  matchingCards = [];
-  clearTempArr();
-  resetCardClicks();
-  removeCardFlipClass();
-  displayPlayerMoves(true);
-};
-
