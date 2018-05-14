@@ -1,9 +1,9 @@
 body {
-  height: 100vh;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(to bottom right, #18ffff, #1de9b6);
+  background: linear-gradient(to bottom right, #18ffff, #1de9b6) center center no-repeat fixed;
   color: #383838;
 }
+
 
 header {
   display: flex;
@@ -11,15 +11,33 @@ header {
   align-items: center;
 }
 
+::selection {
+  background-color: #1de9b6;
+}
+
 .title {
-  font-size: 1.7rem;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .player-performance {
   display: flex;
-  width: 30rem;
   align-items: baseline;
-  justify-content: space-evenly;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.player-performance,
+.restart-button {
+font-family: 'Open Sans', sans-serif;
+}
+
+.timer,
+.moves,
+.rating {
+  margin-top: 1rem;
 }
 
 .restart-button:first-child {
@@ -43,21 +61,19 @@ header {
   background-color: #8e2323;
 }
 
-/* font-family: 'Open Sans', sans-serif; */
 
 .card-wrapper {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin: 0 auto;
-  width: 40%;
+  margin: 0 auto 2rem;
   perspective: 1000px;
 }
 
 .card {
   position: relative;
-  width: 10rem;
-  height: 10rem;
+  width: 4.6rem;
+  height: 4.6rem;
   margin: 10px;
   transform-style: preserve-3d;
   cursor: pointer;
@@ -119,4 +135,40 @@ header {
 
 .show-popup {
   transform: scale(1)
+}
+
+
+@media screen and (min-width: 767px) {
+  .card-wrapper {
+    width: 90%;
+  }
+
+  .card {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .player-performance {
+    flex-direction: row;
+    width: 30rem;
+    align-items: baseline;
+    justify-content: space-evenly;
+  }
+
+  .card-wrapper {
+    width: 80%;
+  }
+
+  .card {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .card-wrapper {
+    width: 47%;
+  }
 }
