@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Luckiest Guy', cursive;
   background: linear-gradient(to bottom right, #18ffff, #1de9b6) center center no-repeat fixed;
   color: #383838;
 }
@@ -18,7 +18,7 @@ header {
 
 .title {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .player-performance {
@@ -28,11 +28,11 @@ header {
   flex-direction: column;
   margin-bottom: 1rem;
   font-size: 1.3rem;
+  font-family: 'Luckiest Guy', cursive;
 }
 
-.player-performance,
 .restart-button {
-font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .timer,
@@ -68,9 +68,11 @@ font-family: 'Open Sans', sans-serif;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  padding: 1rem;
   margin: 0 auto 2rem;
   perspective: 1000px;
   transition: opacity 300ms 600ms;
+  box-shadow: inset 1px 1px 15px rgba(0, 182, 131, .5);
 }
 
 .card {
@@ -125,10 +127,10 @@ font-family: 'Open Sans', sans-serif;
 
 .popup {
   position: absolute;
-  width: 30%;
-  height: 30%;
-  top: 13%;
-  left: 35%;
+  width: 79%;
+  height: 33%;
+  top: 11%;
+  left: 10%;
   padding-top: 2rem;
   border-radius: .5rem;
   background-color: #18ffff;
@@ -144,6 +146,10 @@ font-family: 'Open Sans', sans-serif;
   align-items: center;
 }
 
+.display-popup-info h3 {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .show-popup {
   transform: scale(1);
 }
@@ -154,6 +160,7 @@ font-family: 'Open Sans', sans-serif;
 
 .pop-up-timer,
 .pop-up-rating {
+  font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
@@ -188,10 +195,22 @@ font-family: 'Open Sans', sans-serif;
     width: 10rem;
     height: 10rem;
   }
+
+  .popup {
+    width: 54%;
+    left: 22%;
+  }
 }
 
 @media screen and (min-width: 1440px) {
   .card-wrapper {
     width: 47%;
+  }
+
+  .popup {
+    top: 13%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
   }
 }
