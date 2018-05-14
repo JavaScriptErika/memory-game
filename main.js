@@ -1,8 +1,10 @@
 let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector('.card-wrapper');
-let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍫🍫🍧🍧🥧🥧'];
+// let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍫🍫🍧🍧🥧🥧'];
+let emojiArr = [...'🍧🍧🥧🥧'];
 let gameMovesCounter = 0;
+const header = document.querySelector('header')
 let matchingCards = [];
 const playerMoves = document.getElementById('player-moves');
 const playerMinutes = document.getElementById('player-minutes');
@@ -144,7 +146,7 @@ const displayPlayerMoves = keepCounting => {
 
 // Compare previous card clicked [0] and current card clicked [1]
 
-const doCardsMatch = card => {
+const doCardsMatch = () => {
   tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch() : cardsDontMatch();
 };
 
@@ -209,9 +211,17 @@ const beginGameTimer = () => {
 
 const gameWon = () => {
   clearInterval(timer);
-  popUp.classList.add('show-popup');
-  popUpInfo.innerText = `it took ${playerMinutes.innerText} minutes and ${playerSeconds.innerText} seconds, with a star rating of ${starArr.join('')}`;
+  showPopupAndFade();
+  popUpInfo.innerHTML = `<div class="pop-up-timer">⏰ ${playerMinutes.innerText} : ${playerSeconds.innerText}</div>
+                          <div class="pop-up-rating"> ${playerStars.innerText}</div >`
 };
+
+const showPopupAndFade = () => {
+  popUp.classList.add('show-popup');
+  header.classList.add('fade-background');
+  cardWrapper.classList.add('fade-background');
+
+}
 
 restartButton.forEach(button => {
   button.addEventListener('click', () => {
@@ -219,11 +229,9 @@ restartButton.forEach(button => {
   });
 });
 
-
 // reset the game board, the timer, and the star rating
 const resetGame = () => {
-  popUp.classList.contains('show-popup') ? popUp.classList.remove('show-popup') : null;
-
+  popUp.classList.contains('show-popup') ? removePopupAndFade() : null;
   resetGameWithoutPlaying();
   resetStars();
   resetGameTimer();
@@ -235,12 +243,17 @@ const resetGame = () => {
   displayPlayerMoves(true);
 };
 
+const removePopupAndFade = () => {
+  popUp.classList.remove('show-popup');
+  header.classList.remove('fade-background');
+  cardWrapper.classList.remove('fade-background');
+}
 
 /*
 What if the user keeps clicking the "restart" button without actually playing the game?
 This allows me to call a function to shuffle the cards without a transition end call
 or the function to reassign the emoji after animation.
-
+ 
 Without this function, bugs happen! If a user clicks endlessly on the restart button,
 and then clicks a card, the previous emoji would glitch. Then, if I didn't add a transition end 
  when a card IS clicked and user refreshes, the reshuffled emoji would briefly appear.

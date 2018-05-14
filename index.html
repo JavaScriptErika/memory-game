@@ -14,23 +14,24 @@
 <body>
   <header>
     <div class="title">
-      <h1>Dessert Memory Game</h1>
+      <h1>Memory Game</h1>
     </div>
     <div class="player-performance">
 
       <div class="timer">
-        Timer:
         <time>
+          ⏰
           <span id="player-minutes">00</span> :
           <span id="player-seconds">00</span>
         </time>
       </div>
 
-      <div class="moves">Moves:
+      <div class="moves">
+        Moves:
         <span id="player-moves"></span>
       </div>
 
-      <div class="rating">Rating:
+      <div class="rating">
         <span id="player-stars"></span>
       </div>
 
@@ -44,11 +45,13 @@
   </section>
 
   <section class="popup">
-    <h1>Congratulations!</h1>
+    <h1 class="title"> 🎉 Congratulations! 🎉</h1>
     <div class="display-popup-info">
     </div>
-    <h3>Play again?</h3>
-    <input class="restart-button" type="button" value="Restart">
+    <div class="display-popup-info">
+      <h3>Play again?</h3>
+      <input class="restart-button" type="button" value="Restart">
+    </div>
   </section>
   <script src="main.js"></script>
 </body>

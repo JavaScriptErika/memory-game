@@ -9,6 +9,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: opacity 300ms 600ms;
 }
 
 ::selection {
@@ -40,6 +41,7 @@ font-family: 'Open Sans', sans-serif;
   margin-top: 1rem;
 }
 
+
 .restart-button:first-child {
   margin: 2rem 0;
 }
@@ -68,6 +70,7 @@ font-family: 'Open Sans', sans-serif;
   flex-wrap: wrap;
   margin: 0 auto 2rem;
   perspective: 1000px;
+  transition: opacity 300ms 600ms;
 }
 
 .card {
@@ -122,21 +125,41 @@ font-family: 'Open Sans', sans-serif;
 
 .popup {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: tomato;
+  width: 30%;
+  height: 30%;
+  top: 13%;
+  left: 35%;
+  padding-top: 2rem;
+  border-radius: .5rem;
+  background-color: #18ffff;
+  box-shadow: 2px 3px 15px #383838;
   z-index: 1;
   transform: scale(0);
   transition: transform 400ms 600ms ease-in-out;
 }
 
-.show-popup {
-  transform: scale(1)
+.display-popup-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+.show-popup {
+  transform: scale(1);
+}
+
+.pop-up-timer {
+ margin-top: 1rem;
+}
+
+.pop-up-timer,
+.pop-up-rating {
+  margin-bottom: 1rem;
+}
+
+.fade-background {
+  opacity: .3;
+}
 
 @media screen and (min-width: 767px) {
   .card-wrapper {
