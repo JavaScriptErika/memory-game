@@ -257,7 +257,8 @@ restartButton.forEach(button => {
 const resetGame = () => {
   popUp.classList.contains('show-popup') ? popUp.classList.remove('show-popup') : null;
 
-  playerStars.innerText = `${[...'⭐⭐⭐'].join('')}`;
+  starArr = [...'⭐⭐⭐']
+  playerStars.innerText = `${starArr.join('')}`;
   resetGameTimer();
   reassignEmojiToCards(shuffle(emojiArr));
   gameMovesCounter = 0;

@@ -6,30 +6,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Memory Game</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
   <header>
-    <h1>Dessert Memory Game</h1>
+    <div class="title">
+      <h1>Dessert Memory Game</h1>
+    </div>
     <div class="player-performance">
-      <p>Moves:
-        <span id="player-moves"></span>
-      </p>
-      <p>Rating:
-        <span id="player-stars"></span>
-      </p>
-      <p>Timer:
+
+      <div class="timer">
+        Timer:
         <time>
           <span id="player-minutes">00</span> :
           <span id="player-seconds">00</span>
         </time>
-      </p>
+      </div>
+
+      <div>Moves:
+        <span id="player-moves"></span>
+      </div>
+
+      <div>Rating:
+        <span id="player-stars"></span>
+      </div>
+
+    </div>
+    <div>
       <input class="restart-button" type="button" value="Restart">
     </div>
   </header>
+
   <section class="card-wrapper">
   </section>
+
   <section class="popup">
     <h1>Congratulations!</h1>
     <div class="display-popup-info">

@@ -1,7 +1,56 @@
+body {
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to bottom right, #18ffff, #1de9b6);
+  color: #383838;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.7rem;
+}
+
+.player-performance {
+  display: flex;
+  width: 30rem;
+  align-items: baseline;
+  justify-content: space-evenly;
+}
+
+.restart-button:first-child {
+  margin: 2rem 0;
+}
+
+.restart-button {
+  cursor: pointer;
+  background-color: #b42f2f; 
+  border: none;
+  color: #fefdfb;
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  border-radius: .3rem;
+  box-shadow: 2px 3px 3px #383838;
+  transition: background-color 300ms
+}
+
+.restart-button:hover {
+  background-color: #8e2323;
+}
+
+/* font-family: 'Open Sans', sans-serif; */
+
 .card-wrapper {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin: 0 auto;
+  width: 40%;
   perspective: 1000px;
 }
 
@@ -13,11 +62,15 @@
   transform-style: preserve-3d;
   cursor: pointer;
   transition: transform 400ms ease-in-out;
+  box-shadow: 2px 3px 3px #37006a;
+  border-radius: .5rem;
 }
 
+
 .card-front,
-.caed-back {
+.card-back {
   backface-visibility: hidden;
+  border-radius: .5rem;
 }
 
 .card-front {
@@ -27,18 +80,24 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: blue;
+  background-color: #6a1b9a;
 }
 
 .card-back {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
+  text-align: center;
+  font-size: 3rem;
+  background-color: #fefdfb;
   transform: rotateY(-180deg);
-  background-color: peru;
 }
 
 .flip-card {
