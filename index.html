@@ -6,73 +6,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Memory Game</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Open+Sans" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
 
 <body>
+  <header>
+    <div class="title">
+      <h1>Memory Game</h1>
+    </div>
+
+    <div class="player-performance">
+      <div class="timer">
+        ⏰
+        <span id="player-minutes">00</span> :
+        <span id="player-seconds">00</span>
+      </div>
+
+      <div class="moves">
+        Moves:
+        <span id="player-moves"></span>
+      </div>
+
+      <div class="rating">
+        <span id="player-stars"></span>
+      </div>
+    </div>
+
+    <div class="restart-button-wrapper">
+      <input class="restart-button" type="button" value="Restart">
+    </div>
+  </header>
+
   <div class="card-wrapper">
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍩
-      </div>
+  </div>
+
+  <div class="popup">
+    <div class="title">
+      <h1>🎉 You Did It! 🎉</h1>
     </div>
 
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍰
-      </div>
+    <div class="display-popup-info">
     </div>
 
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍩
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍰
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍭
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍭
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍦
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-front">
-      </div>
-      <div class="card-back">
-        🍦
-      </div>
+    <div class="display-popup-info">
+      <h3>Play again?</h3>
+      <input class="restart-button" type="button" value="Restart">
     </div>
   </div>
 
