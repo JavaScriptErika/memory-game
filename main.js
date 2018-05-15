@@ -180,14 +180,17 @@ the emoji array of current card clicked that has been passed down, and that ther
 const cardsValidationAnimation = (card) => {
   const cardBacks = document.querySelectorAll('.card-back');
   cardBacks.forEach((cardback, i) => {
-    if (cardback.closest('.flip-card') && matchingCards.includes(cardback.closest('.flip-card').innerText) && tempOpenCards.length === 2) {
+    if (cardback.closest('.flip-card') && matchingCards.includes(cardback.innerText) && tempOpenCards.length === 2) {
       cardback.classList.add('card-back-match');
+      cardback.closest('.flip-card').classList.add('flip-card-valid-match')
     }
 
-    else if (!cardback.classList.contains('card-back-match')) {
+    else if (cardback.closest('.flip-card') && !cardback.classList.contains('card-back-match')) {
       cardback.classList.add('card-back-mismatch')
+      cardback.closest('.flip-card').classList.add('flip-card-invalid-match')
       setTimeout(() => {
         cardback.classList.remove('card-back-mismatch')
+        cardback.closest('.flip-card').classList.remove('flip-card-invalid-match')
       }, 1000);
     }
   });
@@ -287,6 +290,7 @@ and then clicks a card, the previous emoji would glitch. Then, if I didn't add a
 */
 
 const resetGameWithoutPlaying = () => {
+  removeCardMatchAnimation();
   const areCardsFlippedOver = cardsArr.filter((card) => {
     return card.classList.contains('flip-card')
   });
@@ -328,9 +332,13 @@ const resetGameCounter = () => {
 
 const removeCardMatchAnimation = () => {
   const cardBacks = document.querySelectorAll('.card-back');
-  cardBacks.forEach((cardback, i) => {
+  cardBacks.forEach((cardback) => {
     cardback.classList.remove('card-back-match');
   });
+
+  cardsArr.forEach((card) => {
+    card.classList.remove('flip-card-valid-match')
+  })
 }
 
 // Resets cardClicksCounter after 1s, we do this so we only keep track of up to 2 clicks
@@ -343,6 +351,4 @@ const resetCardClicks = () => {
 
 // Clear array so we can just compare 2 values: previous and current clicks
 
-const clearTempArr = () => {
-  tempOpenCards = [];
-};
+const clearTempArr = () => tempOpenCards = [];

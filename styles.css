@@ -48,7 +48,7 @@ header {
 
 .restart-button {
   cursor: pointer;
-  background-color: #b42f2f; 
+  background-color: #005ADC; 
   border: none;
   color: #fefdfb;
   padding: 1rem 2rem;
@@ -60,7 +60,7 @@ header {
 }
 
 .restart-button:hover {
-  background-color: #8e2323;
+  background-color: #0044A7;
 }
 
 
@@ -72,7 +72,7 @@ header {
   margin: 0 auto 2rem;
   perspective: 1000px;
   transition: opacity 300ms 600ms;
-  box-shadow: inset 1px 1px 15px rgba(0, 182, 131, .4);
+  box-shadow: inset 1px 1px 15px rgba(0, 182, 131, .55);
 }
 
 .card {
@@ -119,19 +119,43 @@ header {
   font-size: 3rem;
   background-color: #fefdfb;
   transform: rotateY(-180deg);
-  transition: background-color 200ms 300ms
+  transition: background-color 100ms 200ms
 }
 
 .flip-card {
   transform: rotateY(180deg);
 }
 
+.flip-card-valid-match {
+  animation: cards-valid 800ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
+}
+
 .card-back-match {
-  background-color: green;
+  background-color: #00FF9E;
+}
+
+.flip-card-invalid-match {
+  animation: cards-invalid 800ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
 }
 
 .card-back-mismatch {
-  background-color: red;
+  background-color: #FF0049;
+}
+
+
+
+@keyframes cards-valid {
+  0% {transform: skewX(0deg) rotateY(180deg)}
+  50% {transform: skewX(10deg) rotateY(180deg)}
+  75% {transform: skewX(-10deg) rotateY(180deg)}
+  100% {transform: skewX(0deg) rotateY(180deg)}
+}
+
+@keyframes cards-invalid {
+  0% {transform: translateX(0) rotateY(180deg)}
+  50% {transform: translateX(10px) rotateY(180deg)}
+  75% {transform: translateX(-10px) rotateY(180deg)}
+  100% {transform: translateX(0) rotateY(180deg)}
 }
 
 .popup {
@@ -149,6 +173,10 @@ header {
   transition: transform 400ms 600ms ease-in-out;
 }
 
+.show-popup {
+  transform: scale(1);
+}
+
 .display-popup-info {
   display: flex;
   flex-direction: column;
@@ -159,9 +187,6 @@ header {
   font-family: 'Open Sans', sans-serif;
 }
 
-.show-popup {
-  transform: scale(1);
-}
 
 .pop-up-timer {
  margin-top: 1rem;
