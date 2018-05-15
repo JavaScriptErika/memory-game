@@ -1,3 +1,4 @@
+const body = document.querySelector('body');
 let cardsArr = [];
 let cardClicksCounter = 0;
 const cardWrapper = document.querySelector('.card-wrapper');
@@ -32,6 +33,7 @@ window.addEventListener('load', () => {
   addClickListenerToCards(cardsArr);
   displayPlayerMoves(true);
   displayAndChangeStarRating();
+  body.classList.remove('preload');
 });
 
 /*

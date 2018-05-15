@@ -6,6 +6,14 @@ body {
   background: linear-gradient(to bottom right, #18ffff, #1de9b6) center center no-repeat fixed;
 }
 
+/*
+Potential fix for Chrome bug to prevent animation triggers
+https://css-tricks.com/transitions-only-after-page-load/
+*/
+.preload {
+  transition: none !important;
+}
+
 ::selection {
   background-color: #1de9b6;
 }
