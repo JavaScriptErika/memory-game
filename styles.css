@@ -17,7 +17,12 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 4rem;
   transition: opacity 300ms 600ms;
+}
+
+header .title h1 {
+  font-size: 3rem;
 }
 
 .player-performance {
@@ -27,11 +32,15 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin: 1rem 0 1rem;
 }
 
 .restart-button {
   font-family: 'Open Sans', sans-serif;
+}
+
+.restart-button-wrapper {
+  margin: .5rem 0 2rem;
 }
 
 .timer,
@@ -40,17 +49,16 @@ header {
   margin-top: 1rem;
 }
 
-.restart-button:first-child {
-  margin: 2rem 0;
-}
-
 /* END HEADER STYLING */
 
 /* SHARED HEADER AND DISPLAY */
 .title {
-  margin: 0;
   text-align: center;
-  font-size: 2rem;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 2.2rem;
 }
 
 .restart-button {
@@ -216,9 +224,16 @@ when popup modal is displayed */
 
 /* MEDIA QUERIES */
 @media screen and (min-width: 768px) {
+  header .title h1 {
+    font-size: 5rem;
+  }
+
+  .title h1 {
+    font-size: 2.8rem;
+  }
+  
   .player-performance {
     flex-direction: row;
-    align-items: baseline;
     justify-content: space-evenly;
     width: 30rem;
   }

@@ -16,14 +16,12 @@
     <div class="title">
       <h1>Memory Game</h1>
     </div>
-    <div class="player-performance">
 
+    <div class="player-performance">
       <div class="timer">
-        <time>
-          ⏰
-          <span id="player-minutes">00</span> :
-          <span id="player-seconds">00</span>
-        </time>
+        ⏰
+        <span id="player-minutes">00</span> :
+        <span id="player-seconds">00</span>
       </div>
 
       <div class="moves">
@@ -34,25 +32,30 @@
       <div class="rating">
         <span id="player-stars"></span>
       </div>
-
     </div>
-    <div>
+
+    <div class="restart-button-wrapper">
       <input class="restart-button" type="button" value="Restart">
     </div>
   </header>
 
-  <section class="card-wrapper">
-  </section>
+  <div class="card-wrapper">
+  </div>
 
-  <section class="popup">
-    <h1 class="title"> 🎉 You Did It! 🎉</h1>
+  <div class="popup">
+    <div class="title">
+      <h1>🎉 You Did It! 🎉</h1>
+    </div>
+
     <div class="display-popup-info">
     </div>
+
     <div class="display-popup-info">
       <h3>Play again?</h3>
       <input class="restart-button" type="button" value="Restart">
     </div>
-  </section>
+  </div>
+
   <script src="main.js"></script>
 </body>
 
