@@ -1,10 +1,18 @@
+/* MISC HTML ELEMENTS */
 body {
   font-family: 'Luckiest Guy', cursive;
-  background: linear-gradient(to bottom right, #18ffff, #1de9b6) center center no-repeat fixed;
   color: #383838;
+  letter-spacing: 1px;
+  background: linear-gradient(to bottom right, #18ffff, #1de9b6) center center no-repeat fixed;
 }
 
+::selection {
+  background-color: #1de9b6;
+}
 
+/* END MISC HTML ELEMENTS */
+
+/* HEADER STYLING */
 header {
   display: flex;
   flex-direction: column;
@@ -12,23 +20,14 @@ header {
   transition: opacity 300ms 600ms;
 }
 
-::selection {
-  background-color: #1de9b6;
-}
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-}
-
 .player-performance {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
   font-family: 'Luckiest Guy', cursive;
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .restart-button {
@@ -41,9 +40,17 @@ header {
   margin-top: 1rem;
 }
 
-
 .restart-button:first-child {
   margin: 2rem 0;
+}
+
+/* END HEADER STYLING */
+
+/* SHARED HEADER AND DISPLAY */
+.title {
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .restart-button {
@@ -63,30 +70,37 @@ header {
   background-color: #0044A7;
 }
 
+/* SHARED HEADER AND DISPLAY */
 
+/* Class added via JS to header and .card-wrapper
+when popup modal is displayed */
+.fade-background {
+  opacity: .3;
+}
+
+/* CARD STYLING */
 .card-wrapper {
+  perspective: 1000px;
   display: flex;
-  justify-content: space-evenly;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   padding: 1rem;
   margin: 0 auto 2rem;
-  perspective: 1000px;
-  transition: opacity 300ms 600ms;
   box-shadow: inset 1px 1px 15px rgba(0, 182, 131, .55);
+  transition: opacity 300ms 600ms;
 }
 
 .card {
+  transform-style: preserve-3d;
   position: relative;
   width: 4.6rem;
   height: 4.6rem;
   margin: 10px;
-  transform-style: preserve-3d;
   cursor: pointer;
-  transition: transform 600ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
   box-shadow: 2px 3px 3px #37006a;
   border-radius: .5rem;
+  transition: transform 600ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
 }
-
 
 .card-front,
 .card-back {
@@ -96,11 +110,11 @@ header {
 
 .card-front {
   position: absolute;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
   background-color: #6a1b9a;
 }
 
@@ -110,15 +124,15 @@ header {
   justify-content: center;
   flex-direction: column;
   position: absolute;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
   text-align: center;
   font-size: 3rem;
-  background-color: #fefdfb;
   transform: rotateY(-180deg);
+  background-color: #fefdfb;
   transition: background-color 100ms 200ms
 }
 
@@ -130,19 +144,17 @@ header {
   animation: cards-valid 800ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
 }
 
-.card-back-match {
-  background-color: #00FF9E;
-}
-
 .flip-card-invalid-match {
   animation: cards-invalid 800ms cubic-bezier(0.23, 0.885, 0.32, 1.5);
 }
 
-.card-back-mismatch {
-  background-color: #FF0049;
+.card-back-match {
+  background-color: #00ff9e;
 }
 
-
+.card-back-mismatch {
+  background-color: #ff0049;
+}
 
 @keyframes cards-valid {
   0% {transform: skewX(0deg) rotateY(180deg)}
@@ -158,6 +170,9 @@ header {
   100% {transform: translateX(0) rotateY(180deg)}
 }
 
+/* END CARD STYLING */
+
+/* POPUP STYLING */
 .popup {
   position: absolute;
   width: 79%;
@@ -173,7 +188,7 @@ header {
   transition: transform 400ms 600ms ease-in-out;
 }
 
-.show-popup {
+.display-popup {
   transform: scale(1);
 }
 
@@ -187,7 +202,6 @@ header {
   font-family: 'Open Sans', sans-serif;
 }
 
-
 .pop-up-timer {
  margin-top: 1rem;
 }
@@ -198,11 +212,17 @@ header {
   margin-bottom: 1rem;
 }
 
-.fade-background {
-  opacity: .3;
-}
+/* END POPUP STYLING */
 
-@media screen and (min-width: 767px) {
+/* MEDIA QUERIES */
+@media screen and (min-width: 768px) {
+  .player-performance {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-evenly;
+    width: 30rem;
+  }
+
   .card-wrapper {
     width: 90%;
   }
@@ -214,13 +234,6 @@ header {
 }
 
 @media screen and (min-width: 1024px) {
-  .player-performance {
-    flex-direction: row;
-    width: 30rem;
-    align-items: baseline;
-    justify-content: space-evenly;
-  }
-
   .card-wrapper {
     width: 80%;
   }
@@ -242,9 +255,11 @@ header {
   }
 
   .popup {
-    top: 13%;
-    left: 35%;
     width: 30%;
     height: 30%;
+    top: 13%;
+    left: 35%;
   }
 }
+
+/* END MEDIA QUERIES */

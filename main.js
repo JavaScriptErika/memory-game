@@ -246,7 +246,7 @@ const gameWon = () => {
 };
 
 const showPopupAndFade = () => {
-  popUp.classList.add('show-popup');
+  popUp.classList.add('display-popup');
   header.classList.add('fade-background');
   cardWrapper.classList.add('fade-background');
 
@@ -260,7 +260,7 @@ restartButton.forEach(button => {
 
 // reset the game board, the timer, and the star rating
 const resetGame = () => {
-  popUp.classList.contains('show-popup') ? removePopupAndFade() : null;
+  popUp.classList.contains('display-popup') ? removePopupAndFade() : null;
   resetGameWithoutPlaying();
   resetStars();
   resetGameTimer();
@@ -274,7 +274,7 @@ const resetGame = () => {
 };
 
 const removePopupAndFade = () => {
-  popUp.classList.remove('show-popup');
+  popUp.classList.remove('display-popup');
   header.classList.remove('fade-background');
   cardWrapper.classList.remove('fade-background');
 }
