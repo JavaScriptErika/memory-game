@@ -92,7 +92,6 @@ when popup modal is displayed */
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  padding: 1rem;
   margin: 0 auto 2rem;
   box-shadow: inset 1px 1px 15px rgba(0, 182, 131, .55);
   transition: opacity 300ms 600ms;
@@ -184,7 +183,7 @@ when popup modal is displayed */
 .popup {
   position: absolute;
   width: 79%;
-  height: 33%;
+  height: 40%;
   top: 11%;
   left: 10%;
   padding-top: 2rem;
@@ -240,6 +239,7 @@ when popup modal is displayed */
 
   .card-wrapper {
     width: 90%;
+    padding: 1rem;
   }
 
   .card {
