@@ -191,7 +191,7 @@ when popup modal is displayed */
 .popup {
   position: absolute;
   width: 79%;
-  height: 40%;
+  height: 60%;
   top: 11%;
   left: 10%;
   padding-top: 2rem;
