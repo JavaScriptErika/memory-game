@@ -30,7 +30,7 @@ header {
 }
 
 header .title h1 {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .player-performance {
@@ -110,7 +110,7 @@ when popup modal is displayed */
   position: relative;
   width: 4.6rem;
   height: 4.6rem;
-  margin: 10px;
+  margin: 8px;
   cursor: pointer;
   box-shadow: 2px 3px 3px #37006a;
   border-radius: .5rem;
@@ -235,10 +235,14 @@ when popup modal is displayed */
     font-size: 5rem;
   }
 
+  header .title h1 {
+    font-size: 3rem;
+  }
+
   .title h1 {
     font-size: 2.8rem;
   }
-  
+
   .player-performance {
     flex-direction: row;
     justify-content: space-evenly;
