@@ -1,6 +1,7 @@
 const body = document.querySelector('body');
 let cardsArr = [];
 let cardClicksCounter = 0;
+let cardIndexes = [];
 const cardWrapper = document.querySelector('.card-wrapper');
 let emojiArr = [...'🍩🍩🍰🍰🍭🍭🍦🍦🍪🍪🍫🍫🍧🍧🥧🥧'];
 let gameMovesCounter = 0;
@@ -95,9 +96,9 @@ const addClickListenerToCards = cardsArr => {
       gameMovesCounter === 1 ? beginGameTimer() : null;
       displayAndChangeStarRating();
       if (card.classList.contains('flip-card') && !matchingCards.includes(card.innerText)) {
-        cardsDontMatch();
+        cardsDontMatch(card);
       } else {
-        cardClicksCounter <= 2 ? revealCardBack(card) : null;
+        cardClicksCounter <= 2 ? revealCardBack(card, i) : null;
       }
     }, false);
   });
@@ -110,9 +111,9 @@ const addClickListenerToCards = cardsArr => {
   track of which cards have been clicked on
 */
 
-const revealCardBack = card => {
+const revealCardBack = (card, i) => {
   card.classList.add('flip-card');
-  addOpenCardstoTempArr(card);
+  addOpenCardstoTempArr(card, i);
 };
 
 /*
@@ -123,10 +124,14 @@ a) We do this so if a user clicks on an already paired match, it won't increase 
 2) Add emojis from clicked cards into a temp array of open cards
 a) This will allow us to compare 1 set of current and previous clicked cards at a time
 
-3) Make sure two cards have been clicked and compare if they match
+3) Push the indexes of the card to cardIndexes, this will let us compare card
+  indexes in the doCardsMatch function
+
+4) Make sure two cards have been clicked and compare if they match
 */
 
-const addOpenCardstoTempArr = card => {
+
+const addOpenCardstoTempArr = (card, i) => {
   if (card.classList.contains('flip-card') && matchingCards.includes(card.innerText)) {
     displayPlayerMoves(false);
     resetCardClicks();
@@ -134,6 +139,7 @@ const addOpenCardstoTempArr = card => {
     displayPlayerMoves(true);
   }
   tempOpenCards.push(card.innerText);
+  cardIndexes.push(i)
   tempOpenCards.length === 2 ? doCardsMatch(card) : null;
 };
 
@@ -144,10 +150,15 @@ const displayPlayerMoves = keepCounting => {
   keepCounting ? (playerMoves.textContent = `${gameMovesCounter++}`) : null;
 };
 
-// Compare previous card clicked [0] and current card clicked [1]
+/*
+1) Compare previous card clicked emoji [0] and current card clicked emoji [1]
+2) Compare the card indexes, if a user clicks on the same card twice (same index), we don't
+want that to be considered a match - we do this extra comparison since the innerText emoji does
+match when the same card is clicked twice for tempOpenCards, and it would cause a bug without cardIndexes
+*/
 
 const doCardsMatch = card => {
-  tempOpenCards[0] === tempOpenCards[1] ? cardsDoMatch(card) : cardsDontMatch(card);
+  tempOpenCards[0] === tempOpenCards[1] && (cardIndexes[0] != cardIndexes[1]) ? cardsDoMatch(card) : cardsDontMatch(card);
 };
 
 /*
@@ -166,6 +177,7 @@ const cardsDoMatch = card => {
   cardsValidationAnimation(card);
   resetCardClicks();
   clearTempArr();
+  cardIndexes = [];
   matchingCards.length === emojiArr.length ? gameWon() : null;
 };
 
@@ -188,18 +200,22 @@ const cardsValidationAnimation = card => {
   cardBacks.forEach((cardback, i) => {
     if (cardback.closest('.flip-card') && matchingCards.includes(cardback.innerText) && tempOpenCards.length === 2) {
 
-      cardback.classList.add('card-back-match');
-      cardback.closest('.flip-card').classList.add('flip-card-valid-match');
+      setTimeout(() => {
+        cardback.classList.add('card-back-match');
+        cardback.closest('.flip-card').classList.add('flip-card-valid-match');
+      }, 500);
 
     } else if (cardback.closest('.flip-card') && !cardback.classList.contains('card-back-match')) {
 
-      cardback.classList.add('card-back-mismatch');
-      cardback.closest('.flip-card').classList.add('flip-card-invalid-match');
+      setTimeout(() => {
+        cardback.classList.add('card-back-mismatch');
+        cardback.closest('.flip-card').classList.add('flip-card-invalid-match');
+      }, 200);
 
       setTimeout(() => {
         cardback.classList.remove('card-back-mismatch');
         cardback.closest('.flip-card').classList.remove('flip-card-invalid-match');
-      }, 1000);
+      }, 900);
     }
   });
 };
@@ -213,6 +229,7 @@ const cardsDontMatch = card => {
     removeCardFlipClass();
   }, 1000);
   resetCardClicks();
+  clearCardIndexesArr();
 };
 
 // 1) Remove flip-card class from non-matching cards that do not include matching emojis in the matchingCards array
@@ -272,6 +289,7 @@ const resetGame = () => {
   resetCardClicks();
   removeCardFlipClass();
   removeCardMatchAnimation();
+  clearCardIndexesArr();
   displayPlayerMoves(true);
 };
 
@@ -357,3 +375,6 @@ const resetCardClicks = () => {
 // Clear array so we can just compare 2 values: previous and current clicks
 
 const clearTempArr = () => (tempOpenCards = []);
+
+// Clear array so we can just compare previous and current card index
+const clearCardIndexesArr = () => (cardIndexes = []);
