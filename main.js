@@ -139,7 +139,7 @@ const addOpenCardstoTempArr = (card, i) => {
     displayPlayerMoves(true);
   }
   tempOpenCards.push(card.innerText);
-  cardIndexes.push(i)
+  cardIndexes.push(i);
   tempOpenCards.length === 2 ? doCardsMatch(card) : null;
 };
 
