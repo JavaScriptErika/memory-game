@@ -255,6 +255,7 @@ when popup modal is displayed */
   }
 
   .card {
+    margin: 9.6px;
     width: 7.5rem;
     height: 7.5rem;
   }
